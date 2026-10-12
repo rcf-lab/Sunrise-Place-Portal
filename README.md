@@ -16,4 +16,4 @@ Pay tab → choose a month → enter payment details → Review → Submit → "
 - Visits tab → Book a visit → Review → Confirm
 - Home → Statement of account, Announcements, Notifications, FAQ, Request a correction
 
-- Live demo: https://your-site-name.netlify.app
+- Live demo: https://sunrise-place-portal.netlify.app
