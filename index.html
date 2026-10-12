@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sunrise Place Homeowner Portal</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f7f2ea;
+            --surface: #fff;
+            --surface2: #faf6f0;
+            --fg: #2a2320;
+            --muted: #6b5f57;
+            --line: #eaded0;
+            --pri: #c4500f;
+            --pri-fg: #fff;
+            --pri-soft: #fdeadb;
+            --acc: #f2a900;
+            --acc-soft: #fff3d1;
+            --info: #2d6cb0;
+            --info-soft: #e4eefa;
+            --ok: #1b7a43;
+            --ok-soft: #dff3e6;
+            --warn: #8a5200;
+            --warn-soft: #fff0d1;
+            --err: #b3261e;
+            --err-soft: #fde4e2;
+            --shadow: 0 10px 40px rgba(60, 35, 10, .16);
+            --logo-bg: transparent
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-size: 15px;
+            line-height: 1.45;
+        }
+
+        .phone {
+            width: 100%;
+            height: 100dvh;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            --w: 640px
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            background: var(--surface);
+            min-height: 56px
+        }
+
+        .top h1 {
+            font-size: 17px;
+            margin: 0;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .lg {
+            background: var(--logo-bg);
+            border-radius: 10px;
+            padding: 3px 6px;
+            display: inline-block;
+            max-width: 100%
+        }
+
+        .lg img {
+            display: block;
+            height: 38px;
+            width: auto;
+            max-width: 100%
+        }
+
+        svg {
+            vertical-align: -3px
+        }
+
+        .tile span {
+            color: var(--pri)
+        }
+
+        .badge {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center
+        }
+
+        .brand {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0
+        }
+
+        .brand b {
+            font-size: 15px;
+            line-height: 1.1
+        }
+
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px
+        }
+
+        .ib {
+            border: 0;
+            background: var(--surface2);
+            color: var(--fg);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            font-size: 17px;
+            cursor: pointer;
+            position: relative;
+            flex: none
+        }
+
+        .ib .dot {
+            position: absolute;
+            top: 6px;
+            right: 7px;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background: var(--err);
+            color: #fff;
+            font-size: 10px;
+            display: grid;
+            place-items: center;
+            padding: 0 4px
+        }
+
+        .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--line);
+            background: var(--surface);
+            padding: 6px 6px 8px
+        }
+
+        .tab {
+            border: 0;
+            background: none;
+            color: var(--muted);
+            font: inherit;
+            font-size: 11px;
+            padding: 6px 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            border-radius: 12px
+        }
+
+        .tab span {
+            font-size: 20px
+        }
+
+        .tab.on {
+            color: var(--pri);
+            font-weight: 700;
+            background: var(--pri-soft)
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 14px
+        }
+
+        .card.flat {
+            background: var(--surface2);
+            border-color: transparent
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--pri), #1d7d68);
+            color: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .hero .big {
+            font-size: 30px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1
+        }
+
+        .hero small {
+            opacity: .85
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .between {
+            justify-content: space-between
+        }
+
+        .wrap {
+            flex-wrap: wrap
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .grow {
+            flex: 1;
+            min-width: 0
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0
+        }
+
+        h3 {
+            font-size: 14px;
+            margin: 0
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .sm {
+            font-size: 13px
+        }
+
+        .xs {
+            font-size: 12px
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 14px;
+            padding: 13px 16px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--pri);
+            color: var(--pri-fg);
+            width: 100%;
+            min-height: 48px
+        }
+
+        .btn.sec {
+            background: var(--pri-soft);
+            color: var(--pri)
+        }
+
+        .btn.ghost {
+            background: none;
+            color: var(--pri);
+            border: 1.5px solid var(--pri)
+        }
+
+        .btn.danger {
+            background: var(--err-soft);
+            color: var(--err)
+        }
+
+        .btn.sm {
+            width: auto;
+            min-height: 38px;
+            padding: 8px 14px;
+            font-size: 13px
+        }
+
+        .btn:disabled {
+            opacity: .45;
+            cursor: not-allowed
+        }
+
+        .btn:focus-visible,
+        .ib:focus-visible,
+        .tab:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        .opt:focus-within,
+        .link:focus-visible {
+            outline: 3px solid var(--acc);
+            outline-offset: 2px
+        }
+
+        .link {
+            background: none;
+            border: 0;
+            color: var(--pri);
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 0;
+            text-align: left
+        }
+
+        label.f {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=password],
+        input[type=tel],
+        input[type=number],
+        input[type=date],
+        select,
+        textarea {
+            font: inherit;
+            font-weight: 400;
+            background: var(--surface);
+            color: var(--fg);
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            padding: 12px;
+            width: 100%;
+            min-height: 46px
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical
+        }
+
+        input.bad,
+        select.bad,
+        textarea.bad {
+            border-color: var(--err)
+        }
+
+        .err {
+            color: var(--err);
+            font-size: 12px;
+            font-weight: 500
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 700
+        }
+
+        .pill.ok {
+            background: var(--ok-soft);
+            color: var(--ok)
+        }
+
+        .pill.warn {
+            background: var(--warn-soft);
+            color: var(--warn)
+        }
+
+        .pill.err {
+            background: var(--err-soft);
+            color: var(--err)
+        }
+
+        .pill.n {
+            background: var(--surface2);
+            color: var(--muted)
+        }
+
+        .opt {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border: 1.5px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            cursor: pointer
+        }
+
+        .opt.on {
+            border-color: var(--pri);
+            background: var(--pri-soft)
+        }
+
+        .opt input {
+            accent-color: var(--pri);
+            width: 18px;
+            height: 18px;
+            flex: none
+        }
+
+        .opt.dis {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        .banner {
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.5
+        }
+
+        .banner.info {
+            background: var(--pri-soft)
+        }
+
+        .banner.warn {
+            background: var(--warn-soft);
+            color: var(--warn)
+        }
+
+        .banner.ok {
+            background: var(--ok-soft);
+            color: var(--ok)
+        }
+
+        .banner.err {
+            background: var(--err-soft);
+            color: var(--err)
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .tile {
+            background: var(--surface2);
+            border: 0;
+            border-radius: 14px;
+            padding: 12px;
+            text-align: left;
+            font: inherit;
+            color: var(--fg);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-height: 74px
+        }
+
+        .tile span {
+            font-size: 22px
+        }
+
+        .tile b {
+            font-size: 13px
+        }
+
+        .li {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .li:last-child {
+            border-bottom: 0
+        }
+
+        .amt {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 13px
+        }
+
+        th,
+        td {
+            padding: 8px 6px;
+            text-align: left;
+            border-bottom: 1px solid var(--line)
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .05em
+        }
+
+        td.r,
+        th.r {
+            text-align: right;
+            font-variant-numeric: tabular-nums
+        }
+
+        .steps {
+            display: flex;
+            gap: 6px
+        }
+
+        .steps i {
+            flex: 1;
+            height: 5px;
+            border-radius: 3px;
+            background: var(--line)
+        }
+
+        .steps i.on {
+            background: var(--pri)
+        }
+
+        .center {
+            text-align: center;
+            align-items: center
+        }
+
+        .sect {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-top: 4px
+        }
+
+        .copy {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface2);
+            border-radius: 12px;
+            padding: 10px 12px
+        }
+
+        .copy code {
+            flex: 1;
+            user-select: all;
+            font-size: 14px;
+            overflow-wrap: anywhere
+        }
+
+        .toast {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 84px;
+            background: var(--fg);
+            color: var(--bg);
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            box-shadow: var(--shadow);
+            z-index: 9
+        }
+
+        .chk {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 13px
+        }
+
+        .chk input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--pri);
+            flex: none;
+            margin-top: 1px
+        }
+
+        .pdf {
+            background: #fff;
+            color: #222;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 12px
+        }
+
+        .pdf table {
+            font-size: 11px
+        }
+
+        .pdf th {
+            color: #666
+        }
+
+        .pdf td,
+        .pdf th {
+            border-color: #ddd
+        }
+
+        .phone.wide {
+            --w: 960px
+        }
+
+        .phone.auth {
+            --w: 440px
+        }
+
+        .top {
+            padding-inline: max(16px, calc((100% - var(--w))/2))
+        }
+
+        .body {
+            padding-block: 20px;
+            padding-inline: max(16px, calc((100% - var(--w))/2))
+        }
+
+        .phone.auth {
+            background: var(--surface)
+        }
+
+        @media (min-width:640px) {
+            .body.home {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-content: start;
+                align-items: start;
+                gap: 16px
+            }
+
+            .body.home>.hero,
+            .body.home>.tiles,
+            .body.home>div:first-child {
+                grid-column: 1/-1
+            }
+
+            .body.home>.tiles {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .toast {
+                max-width: 420px;
+                margin-inline: auto
+            }
+        }
+
+        @media (min-width:1024px) {
+            .phone.withnav {
+                display: grid;
+                grid-template-columns: 230px 1fr;
+                grid-template-rows: auto 1fr
+            }
+
+            .phone.withnav>.tabs {
+                grid-column: 1;
+                grid-row: 1/3;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 6px;
+                border-top: 0;
+                border-right: 1px solid var(--line);
+                padding: 20px 12px;
+                background: var(--surface2)
+            }
+
+            .phone.withnav>.tab,
+            .phone.withnav .tab {
+                flex-direction: row;
+                font-size: 15px;
+                gap: 12px;
+                padding: 13px 14px;
+                justify-content: flex-start
+            }
+
+            .phone.withnav>.top {
+                grid-column: 2;
+                grid-row: 1
+            }
+
+            .phone.withnav>.body {
+                grid-column: 2;
+                grid-row: 2;
+                background: var(--bg)
+            }
+
+            .body .card,
+            .body .opt {
+                background: var(--surface)
+            }
+
+            .toast {
+                bottom: 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="phone" id="app"></div>
+    <script>
+        const LOGO = 'logo.png';
+        const P = {home: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>', card: '<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/>', cal: '<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>', user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>', phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 005 5L15 12l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/>', bell: '<path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 004 0"/>', doc: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/>', receipt: '<path d="M5 2h14v20l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/>', help: '<circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2.5 2-2.5 3.5M12 17h.01"/>', edit: '<path d="M12 20h9"/><path d="M16.5 3.5l4 4L8 20l-5 1 1-5z"/>', check: '<circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/>', mail: '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 7l10 7 10-7"/>', clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'};
+        const ic = (n, s = 22) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+        const badge = (n, k) => `<div class="badge" style="background:var(--${k}-soft);color:var(--${k})">${ic(n, 38)}</div>`;
+        const $ = s => document.querySelector(s);
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+        const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+        const S = {
+            user: null, screen: 'welcome', hist: [], tab: 'home', f: {}, errs: {}, fails: 0, toast: '', menu: false, archive: false, open: null,
+            acct: {first: 'Maria', middle: 'Reyes', last: 'Santos', email: 'santos@example.com', phone: '0917 123 4567', block: 5, lot: 12, phase: 2, pass: 'Sunrise2026'},
+            months: [{m: 'September 2026', due: 100, paid: 50}, {m: 'October 2026', due: 100, paid: 0}],
+            pays: [
+                {id: 1, date: 'Aug 5, 2026', month: 'August 2026', amt: 100, method: 'GCash', ref: '7203948110', st: 'Verified'},
+                {id: 2, date: 'Jul 6, 2026', month: 'July 2026', amt: 100, method: 'Cash (office)', ref: '—', st: 'Verified'},
+                {id: 3, date: 'Sep 14, 2026', month: 'September 2026', amt: 50, method: 'Maya', ref: '5521908834', st: 'Verified'}],
+            appts: [{id: 1, purpose: 'Payment', date: 'Fri, Oct 16', time: '10:00 AM', st: 'Confirmed'}], pastAppts: [{purpose: 'Document claim', date: 'Sep 8', time: '2:00 PM', st: 'Completed'}],
+            notifs: [{t: 'Payment verified', d: 'Your ₱50 payment for September was verified.', time: 'Sep 15', unread: true}, {t: 'Appointment reminder', d: 'Payment visit on Fri, Oct 16 at 10:00 AM.', time: 'Today', unread: true}, {t: 'New announcement', d: 'Water interruption on Oct 20.', time: 'Oct 9', unread: false}],
+            news: [{id: 1, t: 'Water interruption on Oct 20', d: 'Oct 9', b: 'Maintenance work on the main line will pause water supply from 9:00 AM to 3:00 PM in Phases 1–2. Please store water in advance.', a: false},
+            {id: 2, t: 'Monthly dues now due on the 15th', d: 'Oct 1', b: 'Reminder: monthly dues are ₱100 and are due on the 15th. Pay online or book an office visit.', a: false},
+            {id: 3, t: 'General Assembly — Sept 28', d: 'Sep 20', b: 'Minutes of the General Assembly are available at the HOA office.', a: true},
+            {id: 4, t: 'Clean-up drive results', d: 'Aug 30', b: 'Thank you to everyone who joined the clean-up drive.', a: true}],
+            sessions: [{d: 'This device — Chrome', t: 'Now', cur: true}, {d: 'Phone — Safari', t: 'Oct 10, 7:42 PM'}, {d: 'Laptop — Edge', t: 'Oct 2, 9:15 AM'}],
+            days: [{k: 'Tue, Oct 13', left: [1, 1, 0, 1, 1, 1]}, {k: 'Wed, Oct 14', full: true}, {k: 'Thu, Oct 15', left: [1, 1, 1, 1, 0, 1]}, {k: 'Fri, Oct 16', left: [1, 0, 1, 1, 1, 1]}, {k: 'Mon, Oct 19', left: [1, 1, 1, 1, 1, 1]}],
+            slots: ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM']
+        };
+        const pending = () => S.pays.filter(p => p.st.startsWith('Pending')).reduce((a, p) => a + p.amt, 0);
+        const monthPending = m => S.pays.filter(p => p.st.startsWith('Pending') && p.month === m).reduce((a, p) => a + p.amt, 0);
+        const rem = m => m.due - m.paid - monthPending(m.m);
+        const total = () => S.months.reduce((a, m) => a + rem(m), 0);
+        const unread = () => S.notifs.filter(n => n.unread).length;
+        const AUTH = ['welcome', 'login', 'register', 'regdone', 'forgot', 'forgotdone'];
+        const TABOF = {home: 'home', statement: 'home', announce: 'home', notifs: 'home', contact: 'home', faq: 'home', pay: 'pay', payflow: 'pay', review: 'pay', paydone: 'pay', history: 'pay', appts: 'appts', book: 'appts', bookreview: 'appts', bookdone: 'appts', correction: 'appts', profile: 'profile'};
+        function go(s, keep) {if (S.screen !== s) S.hist.push(S.screen); S.screen = s; S.errs = {}; S.menu = false; if (!keep) S.f = S.f; render(); const b = $('.body'); if (b) b.scrollTop = 0}
+        function back() {S.screen = S.hist.pop() || (S.user ? 'home' : 'welcome'); S.errs = {}; render()}
+        function root(s) {S.hist = []; S.screen = s; S.errs = {}; S.menu = false; render()}
+        function toast(m) {S.toast = m; render(); clearTimeout(toast.t); toast.t = setTimeout(() => {S.toast = ''; render()}, 2600)}
+        function hdr(title, opts = {}) {
+            if (opts.home) return `<div class="top"><div class="brand" style="flex-direction:column;align-items:flex-start;gap:3px"><span class="lg"><img src="${LOGO}" alt="Sunrise Place Homeowners Association"></span><small>Block ${S.acct.block} · Lot ${S.acct.lot} · Phase ${S.acct.phase}</small></div>
+ <button class="ib" data-a="go" data-v="contact" aria-label="Contact HOA">${ic('phone', 20)}</button>
+ <button class="ib" data-a="go" data-v="notifs" aria-label="Notifications, ${unread()} unread">${ic('bell', 20)}${unread() ? `<span class="dot">${unread()}</span>` : ''}</button></div>`;
+            return `<div class="top"><button class="ib" data-a="back" aria-label="Back">←</button><h1>${esc(title)}</h1></div>`;
+        }
+        function tabs() {const t = TABOF[S.screen]; return `<nav class="tabs" aria-label="Main">` + [['home', 'home', 'Home'], ['pay', 'card', 'Pay'], ['appts', 'cal', 'Visits'], ['profile', 'user', 'Profile']].map(([k, i, l]) => `<button class="tab ${t === k ? 'on' : ''}" data-a="tab" data-v="${k}" ${t === k ? 'aria-current="page"' : ''}><span>${ic(i)}</span>${l}</button>`).join('') + `</nav>`}
+        function fld(id, label, type = 'text', ph = '', extra = '') {return `<label class="f">${label}<input id="${id}" data-f="${id}" type="${type}" placeholder="${ph}" value="${esc(S.f[id] || '')}" class="${S.errs[id] ? 'bad' : ''}" ${extra}>${S.errs[id] ? `<span class="err">${S.errs[id]}</span>` : ''}</label>`}
+        function sel(id, label, opts) {return `<label class="f">${label}<select id="${id}" data-f="${id}" class="${S.errs[id] ? 'bad' : ''}"><option value="">Select…</option>${opts.map(o => `<option ${S.f[id] == o ? 'selected' : ''}>${o}</option>`).join('')}</select>${S.errs[id] ? `<span class="err">${S.errs[id]}</span>` : ''}</label>`}
+
+        const V = {};
+        V.welcome = () => `<div class="body center" style="justify-content:center;gap:18px">
+ <span class="lg" style="padding:10px 14px"><img style="height:auto;width:250px;max-width:100%" src="${LOGO}" alt="Sunrise Place Homeowners Association Inc."></span>
+ <h1 style="margin:0;font-size:19px">Dues Management &amp; Homeowners Portal</h1>
+ <p class="muted sm" style="max-width:290px;margin:0">See your monthly dues, send payment details, book an office visit and read HOA announcements — all in one place.</p>
+ <div class="col" style="width:100%;margin-top:6px"><button class="btn" data-a="go" data-v="login">Log in</button><button class="btn ghost" data-a="go" data-v="register">Register as homeowner</button></div>
+ <div class="xs muted" style="margin-top:8px">Sunrise Place Homeowners Association · Tanza, Cavite</div></div>`;
+        V.login = () => `${hdr('Log in')}<div class="body">
+ ${S.fails >= 5 ? `<div class="banner err">Too many attempts. Please wait 15 minutes before trying again.</div>` : ''}
+ ${S.errs.login ? `<div class="banner err" role="alert">${S.errs.login}</div>` : ''}
+ ${fld('lemail', 'Email', 'email', 'you@example.com', 'autocomplete="username"')}
+ ${fld('lpass', 'Password', 'password', 'Your password', 'autocomplete="current-password"')}
+ <button class="btn" data-a="login" ${S.fails >= 5 ? 'disabled' : ''}>Log in</button>
+ <button class="link" data-a="go" data-v="forgot">Forgot password?</button>
+ <button class="link" data-a="go" data-v="register">Don’t have an account? Register</button>
+  <div class="banner info xs">Prototype demo —<br>email <b>santos@example.com</b><br>password <b>Sunrise2026</b></div></div>`;
+        V.forgot = () => `${hdr('Forgot password')}<div class="body"><p class="muted sm" style="margin:0">Enter the email you registered with. If it matches an account, we’ll send a link to reset your password.</p>${fld('femail', 'Email', 'email', 'you@example.com')}<button class="btn" data-a="forgot">Send reset link</button></div>`;
+        V.forgotdone = () => `${hdr('Check your email')}<div class="body center" style="justify-content:center">${badge('mail', 'pri')}<h2>Reset link sent</h2><p class="muted sm">If an account exists for that email, a reset link is on its way. The link expires in 30 minutes and works once.</p><button class="btn" data-a="root" data-v="login">Back to log in</button></div>`;
+        V.register = () => `${hdr('Homeowner registration')}<div class="body">
+ <div class="banner info xs">Only verified homeowners of Sunrise Place can register. Your Block, Lot, Phase and activation code (given by the HOA office) are checked against HOA records.</div>
+ <div class="sect">Personal details</div>
+ ${fld('rfirst', 'First name', 'text', 'Maria')}${fld('rmid', 'Middle name (optional)', 'text', '')}${fld('rlast', 'Last name', 'text', 'Santos')}
+ ${fld('rphone', 'Phone number (optional)', 'tel', '09XX XXX XXXX')}
+ <div class="sect">Account details</div>
+ ${fld('remail', 'Email (required)', 'email', 'you@example.com')}${fld('rpass', 'Password', 'password', 'At least 8 characters')}${fld('rpass2', 'Confirm password', 'password', '')}
+ <div class="sect">Address details</div>
+ <div class="row">${fld('rblock', 'Block', 'number', '5')}${fld('rlot', 'Lot', 'number', '12')}</div>
+ ${sel('rphase', 'Phase', ['1', '2', '3'])}
+ ${fld('rcode', 'Activation code', 'text', 'Given by HOA office')}
+ <div class="xs muted">Prototype demo code: <b>SP-4821</b></div>
+ <label class="chk"><input type="checkbox" data-f="rterms" ${S.f.rterms ? 'checked' : ''}><span>I agree to the Terms &amp; Conditions and Privacy Policy.${S.errs.rterms ? `<br><span class="err">${S.errs.rterms}</span>` : ''}</span></label>
+ <button class="btn" data-a="register">Create account</button></div>`;
+        V.regdone = () => `${hdr('Registration')}<div class="body center" style="justify-content:center">${badge('check', 'ok')}<h2>Account created</h2><p class="muted sm">Your details matched HOA records. You can now log in with your email and password.</p><button class="btn" data-a="root" data-v="login">Go to log in</button></div>`;
+
+        V.home = () => {
+            const t = total(), p = pending(); const a = S.appts[0]; const n = S.news.filter(x => !x.a)[0];
+            return `${hdr('', {home: 1})}<div class="body home">
+ <div><div class="muted sm">Good day,</div><h2 style="font-size:20px">${esc(S.acct.first)} ${esc(S.acct.last)}</h2></div>
+ <div class="hero"><small>Outstanding balance</small><div class="big">${peso(t)}</div>
+  <div class="sm">${t === 0 ? 'You’re all paid up. Thank you!' : 'Month by month below'}${p ? ` · <b>${peso(p)} pending verification</b>` : ''}</div></div>
+ <div class="card"><h3 style="margin-bottom:6px">Monthly breakdown</h3>${S.months.map(m => {const r = rem(m); const mp = monthPending(m.m); return `<div class="li"><div class="grow"><b>${m.m}</b><div class="xs muted">${peso(m.due)} due${m.paid ? ` · ${peso(m.paid)} paid` : ''}${mp ? ` · ${peso(mp)} pending` : ''}</div></div><div style="text-align:right"><div class="amt">${peso(r)}</div><span class="pill ${r === 0 && !mp ? 'ok' : m.paid || mp ? 'warn' : 'err'}">${r === 0 ? (mp ? 'Pending' : 'Settled') : m.paid || mp ? 'Partial' : 'Unpaid'}</span></div></div>`}).join('')}
+  <button class="btn sec" style="margin-top:8px" data-a="tab" data-v="pay">Go to payments</button></div>
+ <div class="card"><div class="row between"><h3>Next appointment</h3><button class="link xs" data-a="tab" data-v="appts">Manage</button></div>${a ? `<div class="row" style="margin-top:6px"><div style="color:var(--pri)">${ic('cal', 26)}</div><div><b>${a.purpose} visit</b><div class="sm muted">${a.date} · ${a.time}</div></div></div>` : `<div class="sm muted" style="margin-top:6px">No upcoming appointment.</div>`}</div>
+ <div class="card"><div class="row between"><h3>Latest announcement</h3><button class="link xs" data-a="go" data-v="announce">See all</button></div>${n ? `<div style="margin-top:6px"><b class="sm">${esc(n.t)}</b><div class="xs muted">${n.d}</div></div>` : '<div class="sm muted">No announcements.</div>'}</div>
+ <div class="tiles"><button class="tile" data-a="go" data-v="statement"><span>${ic('doc', 24)}</span><b>Statement of account</b><small class="xs muted">View &amp; download</small></button><button class="tile" data-a="go" data-v="history"><span>${ic('receipt', 24)}</span><b>Payment history</b><small class="xs muted">Receipts</small></button><button class="tile" data-a="go" data-v="faq"><span>${ic('help', 24)}</span><b>FAQ</b><small class="xs muted">Quick answers</small></button><button class="tile" data-a="go" data-v="correction"><span>${ic('edit', 24)}</span><b>Spotted an error?</b><small class="xs muted">Request a correction</small></button></div>
+ </div>${tabs()}`
+        };
+
+        V.pay = () => `${hdr('Pay dues')}<div class="body">
+ <div class="banner info xs">Pay through GCash, Maya or bank transfer, then send us the reference number. Staff will check it against the HOA account before it’s marked verified.</div>
+ <div class="sect">Choose what to pay</div>
+ ${S.months.map(m => {const r = rem(m); return `<div class="opt ${r === 0 ? 'dis' : ''}"><div class="grow"><b>${m.m}</b><div class="xs muted">${r === 0 ? 'Settled' : `${peso(r)} remaining of ${peso(m.due)}`}</div></div><button class="btn sm" data-a="startpay" data-v="${m.m}" ${r === 0 ? 'disabled' : ''}>Pay</button></div>`}).join('')}
+ <button class="btn ghost" data-a="go" data-v="history">View payment history</button>
+ <button class="btn sec" data-a="go" data-v="book" data-p="Payment">Prefer to pay in person? Book an office visit</button></div>${tabs()}`;
+        V.payflow = () => {
+            const m = S.months.find(x => x.m === S.f.pmonth); const r = rem(m);
+            return `${hdr('Send payment details')}<div class="body"><div class="steps"><i class="on"></i><i></i><i></i></div>
+ <div class="card flat"><b>${m.m}</b><div class="sm muted">Remaining: ${peso(r)}</div></div>
+ ${fld('pamt', 'Amount you paid (₱)', 'number', '', 'min="1" step="1"')}
+ <div class="xs muted" style="margin-top:-6px">You can pay the full amount or part of it.</div>
+ ${sel('pmethod', 'Payment method', ['GCash', 'Maya', 'Bank transfer'])}
+ ${S.f.pmethod ? `<div class="card flat col"><div class="xs muted">Send to the HOA ${S.f.pmethod} account:</div><div class="copy"><code>${S.f.pmethod === 'Bank transfer' ? 'Sunrise Place HOA · 0123-4567-89' : 'Sunrise Place HOA · 0917 000 1234'}</code><button class="btn sm sec" data-a="copy" data-v="${S.f.pmethod === 'Bank transfer' ? '0123456789' : '09170001234'}">Copy</button></div></div>` : ''}
+ ${fld('pref', 'Reference number', 'text', 'e.g. 7203948110')}${fld('pdate', 'Date you paid', 'date', '')}
+ <button class="btn" data-a="payreview">Review</button></div>`};
+        V.review = () => {
+            const f = S.f; return `${hdr('Review')}<div class="body"><div class="steps"><i class="on"></i><i class="on"></i><i></i></div>
+ <p class="muted sm" style="margin:0">Check carefully — a wrong digit means staff can’t find your transaction.</p>
+ <div class="card">${[['Applies to', f.pmonth], ['Amount', peso(f.pamt)], ['Method', f.pmethod], ['Reference no.', f.pref], ['Date paid', f.pdate]].map(([a, b]) => `<div class="li"><span class="muted grow">${a}</span><b class="amt">${esc(b)}</b></div>`).join('')}</div>
+ <button class="btn" data-a="paysubmit">Submit for verification</button><button class="btn ghost" data-a="back">Edit</button></div>`};
+        V.paydone = () => `${hdr('Submitted')}<div class="body center" style="justify-content:center">${badge('clock', 'warn')}<h2>Pending verification</h2><p class="muted sm">We received your payment details. Staff will verify them and you’ll get an email and an in-app notice. Your balance shows this amount as pending.</p><button class="btn" data-a="root" data-v="home">Back to home</button><button class="btn ghost" data-a="go" data-v="history">View payment history</button><button class="link xs" data-a="simverify">Prototype only: simulate staff verification</button></div>`;
+        V.history = () => `${hdr('Payment history')}<div class="body"><div class="card">${S.pays.slice().sort((a, b) => b.id - a.id).map(p => `<div class="li"><div class="grow"><b class="sm">${p.month}</b><div class="xs muted">${p.date} · ${p.method}${p.ref !== '—' ? ` · Ref ${esc(p.ref)}` : ''}</div></div><div style="text-align:right"><div class="amt">${peso(p.amt)}</div><span class="pill ${p.st === 'Verified' ? 'ok' : 'warn'}">${p.st === 'Verified' ? 'Verified' : 'Pending'}</span></div></div>`).join('')}</div>
+ <div class="xs muted center">Receipts are print-friendly. Need a correction? <button class="link xs" data-a="go" data-v="correction">Request one</button></div></div>${tabs()}`;
+
+        V.statement = () => {
+            const per = S.f.sper || 'Last 3 months'; const rows = [['Jul 2026', 'Dues', 100, 100], ['Aug 2026', 'Dues', 100, 100], ['Sep 2026', 'Dues', 100, 50], ['Oct 2026', 'Dues', 100, 0]]; const show = per === 'Last 3 months' ? rows.slice(1) : per === 'Last 6 months' || per === 'Year to date' ? rows : rows.slice(2);
+            const bal = show.reduce((a, r) => a + r[2] - r[3], 0);
+            return `${hdr('Statement of account')}<div class="body">
+ <label class="f">Period<select data-f="sper" data-r="1">${['Last 3 months', 'Last 6 months', 'Year to date', 'Current month'].map(o => `<option ${per === o ? 'selected' : ''}>${o}</option>`).join('')}</select></label>
+ <div class="pdf"><b>Sunrise Place Homeowners Association</b><div style="margin:2px 0 8px">Statement of Account · ${per}<br>${esc(S.acct.first)} ${esc(S.acct.last)} — Block ${S.acct.block}, Lot ${S.acct.lot}, Phase ${S.acct.phase}<br>As of Oct 12, 2026</div>
+ <table><tr><th>Month</th><th>Item</th><th class="r">Charged</th><th class="r">Paid</th></tr>${show.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${peso(r[2])}</td><td class="r">${peso(r[3])}</td></tr>`).join('')}<tr><td colspan="3"><b>Balance</b></td><td class="r"><b>${peso(bal)}</b></td></tr></table></div>
+ <button class="btn" data-a="dl">Download PDF</button><div class="xs muted center">In the full system this saves a PDF copy to your device.</div></div>${tabs()}`
+        };
+
+        V.appts = () => `${hdr('Office visits')}<div class="body">
+ <button class="btn" data-a="go" data-v="book" data-p="">Book a visit</button>
+ <div class="sect">Upcoming</div>
+ ${S.appts.length ? S.appts.map(a => `<div class="card col"><div class="row between"><b>${a.purpose}</b><span class="pill ok">${a.st}</span></div><div class="sm">${ic('cal', 15)} ${a.date} · ${a.time}</div>
+ ${S.open === a.id ? `<div class="banner warn xs">Cancel this appointment? Slots help other homeowners, so thank you for letting us know.</div><div class="row"><button class="btn danger sm grow" data-a="cancel" data-v="${a.id}">Yes, cancel</button><button class="btn ghost sm grow" data-a="open" data-v="0">Keep</button></div>` : `<div class="row"><button class="btn sec sm grow" data-a="resched" data-v="${a.id}">Reschedule</button><button class="btn danger sm grow" data-a="open" data-v="${a.id}">Cancel</button></div>`}
+ <div class="xs muted">Reminders are emailed 1 day before and the morning of your visit.</div></div>`).join('') : `<div class="card flat sm muted">No upcoming appointments.</div>`}
+ <div class="sect">Past</div>${S.pastAppts.map(a => `<div class="li"><div class="grow"><b class="sm">${a.purpose}</b><div class="xs muted">${a.date} · ${a.time}</div></div><span class="pill n">${a.st}</span></div>`).join('')}
+ <button class="link" data-a="go" data-v="correction">Spotted an error in your records? Request a correction</button></div>${tabs()}`;
+        V.book = () => `${hdr('Book a visit')}<div class="body"><div class="steps"><i class="on"></i><i></i><i></i></div>
+ ${sel('bpurpose', 'Purpose', ['Payment', 'Inquiry', 'Document claim', 'Record correction'])}
+ <div class="sect">Pick a day</div>
+ ${S.days.map((d, di) => d.full ? `<div class="opt dis"><div class="grow"><b>${d.k}</b><div class="xs">Fully booked · next open day: ${S.days.slice(di + 1).find(x => !x.full).k}</div></div><span class="pill err">Full</span></div>` : `<label class="opt ${S.f.bday === d.k ? 'on' : ''}"><input type="radio" name="bday" data-f="bday" data-r="1" value="${d.k}" ${S.f.bday === d.k ? 'checked' : ''}><div class="grow"><b>${d.k}</b><div class="xs muted">${d.left.filter(Boolean).length} slots left</div></div></label>`).join('')}
+ ${S.errs.bday ? `<span class="err">${S.errs.bday}</span>` : ''}
+ ${S.f.bday ? `<div class="sect">Pick a time</div><div class="tiles">${S.slots.map((s, i) => {const d = S.days.find(x => x.k === S.f.bday); const ok = d.left[i]; return `<label class="opt ${!ok ? 'dis' : S.f.btime === s ? 'on' : ''}" style="justify-content:center"><input type="radio" name="btime" data-f="btime" data-r="1" value="${s}" ${S.f.btime === s ? 'checked' : ''} ${ok ? '' : 'disabled'}>${s}</label>`}).join('')}</div>${S.errs.btime ? `<span class="err">${S.errs.btime}</span>` : ''}` : ''}
+ <button class="btn" data-a="bookreview">Review</button></div>`;
+        V.bookreview = () => {
+            const f = S.f; return `${hdr('Review booking')}<div class="body"><div class="steps"><i class="on"></i><i class="on"></i><i></i></div>
+ <div class="card">${[['Purpose', f.bpurpose], ['Day', f.bday], ['Time', f.btime]].map(([a, b]) => `<div class="li"><span class="muted grow">${a}</span><b>${esc(b)}</b></div>`).join('')}</div>
+ ${f.bpurpose === 'Payment' ? `<div class="banner info xs">Bring your payment and a valid ID. Cash or e-wallet accepted at the office.</div>` : ''}
+ <button class="btn" data-a="bookconfirm">Confirm booking</button><button class="btn ghost" data-a="back">Edit</button></div>`};
+        V.bookdone = () => `${hdr('Booked')}<div class="body center" style="justify-content:center">${badge('check', 'ok')}<h2>You’re booked</h2><p class="muted sm">${esc(S.f.bpurpose)} visit · ${esc(S.f.bday)} · ${esc(S.f.btime)}.<br>We’ll email you a reminder.</p><button class="btn" data-a="root" data-v="appts">View my visits</button></div>`;
+        V.correction = () => `${hdr('Request a correction')}<div class="body"><p class="muted sm" style="margin:0">Tell us what looks wrong in your records. Staff will review it; financial corrections also need admin approval.</p>
+ ${sel('ctype', 'What needs fixing?', ['A payment is missing', 'Wrong amount charged', 'Wrong personal details', 'Other'])}
+ <label class="f">Details<textarea data-f="cdesc" class="${S.errs.cdesc ? 'bad' : ''}" placeholder="Month, amount, reference number, etc.">${esc(S.f.cdesc || '')}</textarea>${S.errs.cdesc ? `<span class="err">${S.errs.cdesc}</span>` : ''}</label>
+ <button class="btn" data-a="corr">Submit request</button></div>`;
+        V.announce = () => `${hdr('Announcements')}<div class="body"><div class="row"><button class="btn sm ${S.archive ? 'ghost' : ''}" data-a="arch" data-v="0">Current</button><button class="btn sm ${S.archive ? '' : 'ghost'}" data-a="arch" data-v="1">Archived</button></div>
+ ${S.news.filter(n => n.a === S.archive).map(n => `<div class="card"><button class="link" style="width:100%;color:var(--fg)" data-a="open" data-v="${n.id}"><b>${esc(n.t)}</b><div class="xs muted" style="font-weight:400">${n.d}</div></button>${S.open === n.id ? `<p class="sm" style="margin:8px 0 0">${esc(n.b)}</p>` : ''}</div>`).join('') || '<div class="muted sm">Nothing here.</div>'}
+ <div class="xs muted center">Old announcements are archived, never deleted.</div></div>${tabs()}`;
+        V.notifs = () => `${hdr('Notifications')}<div class="body">${S.notifs.map(n => `<div class="card"><div class="row between"><b class="sm">${esc(n.t)}</b>${n.unread ? '<span class="pill warn">New</span>' : ''}</div><div class="sm muted">${esc(n.d)}</div><div class="xs muted">${n.time}</div></div>`).join('')}<button class="btn sec" data-a="readall">Mark all as read</button></div>${tabs()}`;
+        V.contact = () => `${hdr('Contact the HOA')}<div class="body"><div class="card col"><h3>Office hours</h3><div class="sm">Mon–Fri, 9:00 AM – 4:00 PM</div><div class="sect">Email</div><div class="copy"><code>hoa.sunriseplace@example.com</code><button class="btn sm sec" data-a="copy" data-v="hoa.sunriseplace@example.com">Copy</button></div><div class="sect">Phone</div><div class="copy"><code>(046) 000-0000</code><button class="btn sm sec" data-a="copy" data-v="(046) 000-0000">Copy</button></div></div>
+ <button class="btn" data-a="go" data-v="correction">Send an inquiry</button><button class="btn ghost" data-a="go" data-v="faq">Read the FAQ</button></div>${tabs()}`;
+        V.faq = () => {
+            const q = [['How do I pay my dues online?', 'Open Pay, choose the month, send via GCash, Maya or bank, then enter the reference number. Staff verify it against the HOA record.'], ['Why is my payment “pending”?', 'Staff manually check each reference number. You’ll be notified once verified.'], ['Can I pay part of a month?', 'Yes. Enter the amount you paid and choose which month it applies to.'], ['Can I cancel an appointment?', 'Yes, any time. Please cancel early so others can use the slot.']];
+            return `${hdr('FAQ')}<div class="body">${q.map((x, i) => `<div class="card"><button class="link" style="width:100%;color:var(--fg);font-weight:700" data-a="open" data-v="f${i}">${x[0]}</button>${S.open === 'f' + i ? `<p class="sm muted" style="margin:6px 0 0">${x[1]}</p>` : ''}</div>`).join('')}<button class="btn ghost" data-a="go" data-v="correction">Still stuck? Send an inquiry</button></div>${tabs()}`
+        };
+        V.profile = () => `${hdr('Profile')}<div class="body"><div class="card row"><div class="ib" style="width:52px;height:52px;display:grid;place-items:center;background:var(--pri-soft);color:var(--pri)">${ic('user', 26)}</div><div class="grow"><b>${esc(S.acct.first)} ${esc(S.acct.middle)} ${esc(S.acct.last)}</b><div class="xs muted">${esc(S.acct.email)}</div><div class="xs muted">Block ${S.acct.block} · Lot ${S.acct.lot} · Phase ${S.acct.phase}</div></div></div>
+ <div class="sect">Login activity</div><div class="card">${S.sessions.map(s => `<div class="li"><div class="grow sm">${s.d}</div><span class="xs muted">${s.t}</span></div>`).join('')}</div>
+ <button class="btn danger" data-a="logoutall">Log out of all devices</button>
+ <button class="btn ghost" data-a="logout">Log out</button></div>${tabs()}`;
+
+        function render() {
+            const a = $('#app'); const fn = V[S.screen] || V.welcome;
+            const sc = a.querySelector('.body'); const keep = sc && S._last === S.screen ? sc.scrollTop : 0;
+            const h = fn(); a.className = 'phone' + (S.screen === 'home' ? ' wide' : '') + (AUTH.includes(S.screen) ? ' auth' : '') + (h.includes('class="tabs"') ? ' withnav' : ''); a.innerHTML = h + (S.toast ? `<div class="toast" role="status">${esc(S.toast)}</div>` : '');
+            const nb = a.querySelector('.body'); if (nb) nb.scrollTop = keep; S._last = S.screen;
+        }
+        const need = (id, msg) => {if (!String(S.f[id] || '').trim()) {S.errs[id] = msg; return true} return false};
+        const A = {
+            go(v, el) {if (el.dataset.p !== undefined) S.f.bpurpose = el.dataset.p || S.f.bpurpose; go(v)}, back() {back()}, root(v) {root(v)},
+            tab(v) {S.hist = []; S.screen = v; S.open = null; render()},
+            login() {
+                const e = (S.f.lemail || '').trim().toLowerCase(), p = S.f.lpass || ''; S.errs = {};
+                if (S.fails >= 5) {render(); return }
+                if (e === S.acct.email && p === S.acct.pass) {S.user = S.acct; S.fails = 0; S.f = {}; root('home')}
+                else {S.fails++; S.errs.login = 'Email or password is incorrect.'; render()}
+            },
+            forgot() {S.errs = {}; const e = S.f.femail || ''; if (!/^\S+@\S+\.\S+$/.test(e)) {S.errs.femail = 'Enter a valid email.'; render(); return } go('forgotdone')},
+            register() {
+                S.errs = {}; const f = S.f;
+                need('rfirst', 'First name is required.'); need('rlast', 'Last name is required.');
+                if (!/^\S+@\S+\.\S+$/.test(f.remail || '')) S.errs.remail = 'Enter a valid email.';
+                if ((f.rpass || '').length < 8) S.errs.rpass = 'Use at least 8 characters.';
+                if (f.rpass2 !== f.rpass) S.errs.rpass2 = 'Passwords do not match.';
+                need('rblock', 'Required.'); need('rlot', 'Required.'); need('rphase', 'Choose a phase.'); need('rcode', 'Activation code is required.');
+                if (!f.rterms) S.errs.rterms = 'Please accept to continue.';
+                if (!Object.keys(S.errs).length) {if ((f.rcode || '').trim().toUpperCase() !== 'SP-4821') {S.errs.rcode = 'We couldn’t match these details to HOA records. Check them or ask the HOA office.'} }
+                if (Object.keys(S.errs).length) {render(); const el = $('.bad,.err'); if (el) el.scrollIntoView({block: 'center'}); return }
+                S.acct = {...S.acct, first: f.rfirst, middle: f.rmid || '', last: f.rlast, email: f.remail.toLowerCase(), pass: f.rpass, block: f.rblock, lot: f.rlot, phase: f.rphase}; S.f = {}; go('regdone')
+            },
+            startpay(v) {S.f = {pmonth: v, pamt: rem(S.months.find(m => m.m === v))}; go('payflow')},
+            copy(v) {try {navigator.clipboard.writeText(v).then(() => toast('Copied'), () => toast('Select the text and copy it'))} catch (e) {toast('Select the text and copy it')} },
+            payreview() {
+                S.errs = {}; const f = S.f; const m = S.months.find(x => x.m === f.pmonth); const amt = Number(f.pamt);
+                if (!(amt > 0)) S.errs.pamt = 'Enter the amount you paid.'; else if (amt > rem(m)) S.errs.pamt = 'That is more than the remaining ' + peso(rem(m)) + '.';
+                need('pmethod', 'Choose a method.');
+                if (!/^\d{6,}$/.test((f.pref || '').trim())) S.errs.pref = 'Enter the reference number (digits only, at least 6).';
+                else if (S.pays.some(p => p.ref === f.pref.trim())) S.errs.pref = 'This reference number was already used. Check for typos.';
+                need('pdate', 'Pick the date you paid.');
+                if (Object.keys(S.errs).length) {render(); return } go('review')
+            },
+            paysubmit() {
+                const f = S.f; S.pays.push({id: S.pays.length + 1, date: 'Oct 12, 2026', month: f.pmonth, amt: Number(f.pamt), method: f.pmethod, ref: f.pref.trim(), st: 'Pending verification'});
+                S.notifs.unshift({t: 'Payment received', d: peso(f.pamt) + ' for ' + f.pmonth + ' is awaiting verification.', time: 'Just now', unread: true}); go('paydone')
+            },
+            simverify() {S.pays.forEach(p => {if (p.st.startsWith('Pending')) {p.st = 'Verified'; const m = S.months.find(x => x.m === p.month); if (m) m.paid += p.amt} }); S.notifs.unshift({t: 'Payment verified', d: 'Your payment was verified by staff.', time: 'Just now', unread: true}); toast('Staff verified your payment')},
+            dl() {toast('Prototype: the PDF download would start here')},
+            open(v) {S.open = S.open == v || v === '0' ? null : (isNaN(v) ? v : Number(v)); render()},
+            cancel(v) {S.appts = S.appts.filter(a => a.id != v); S.open = null; S.notifs.unshift({t: 'Appointment cancelled', d: 'Your visit was cancelled.', time: 'Just now', unread: false}); toast('Appointment cancelled')},
+            resched(v) {S.appts = S.appts.filter(a => a.id != v); S.f = {bpurpose: 'Payment'}; go('book')},
+            bookreview() {S.errs = {}; need('bpurpose', 'Choose a purpose.'); if (!S.f.bday) S.errs.bday = 'Pick a day.'; else if (!S.f.btime) S.errs.btime = 'Pick a time.'; if (Object.keys(S.errs).length) {render(); return } go('bookreview')},
+            bookconfirm() {S.appts.push({id: Date.now(), purpose: S.f.bpurpose, date: S.f.bday, time: S.f.btime, st: 'Confirmed'}); go('bookdone')},
+            corr() {S.errs = {}; need('ctype', 'Choose a type.'); need('cdesc', 'Please describe the problem.'); if (Object.keys(S.errs).length) {render(); return } S.f = {}; S.hist.pop(); S.screen = TABOF[S.hist[S.hist.length - 1]] ? S.hist[S.hist.length - 1] : 'home'; render(); toast('Request sent. Staff will review it.')},
+            arch(v) {S.archive = v === '1'; S.open = null; render()},
+            readall() {S.notifs.forEach(n => n.unread = false); render()},
+            logoutall() {S.sessions = [S.sessions[0]]; render(); toast('Logged out of other devices')},
+            logout() {S.user = null; S.f = {}; root('welcome')}
+        };
+        document.addEventListener('click', e => {const t = e.target.closest('[data-a]'); if (t && A[t.dataset.a]) {e.preventDefault(); A[t.dataset.a](t.dataset.v, t)} });
+        function onF(e) {
+            const t = e.target; if (!t.dataset || !t.dataset.f) return; S.f[t.dataset.f] = t.type === 'checkbox' ? t.checked : t.value;
+            if (e.type === 'change' && (t.dataset.r || t.dataset.f === 'pmethod' || t.dataset.f === 'bpurpose')) {if (t.dataset.f === 'bday') S.f.btime = ''; render()}
+        }
+        document.addEventListener('input', onF); document.addEventListener('change', onF);
+        render();
+    </script>
+
+</body>
+
+</html>
