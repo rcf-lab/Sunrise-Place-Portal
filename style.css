@@ -1,0 +1,500 @@
+/* =====================================================
+   style.css  -  how the portal LOOKS
+   ===================================================== */
+
+
+/* ---------- 1. COLORS ----------
+   Change a color here and it changes everywhere. */
+:root {
+  color-scheme: light;
+
+  --bg: #f7f2ec;          /* page background */
+  --surface: #ffffff;     /* cards */
+  --surface2: #f8f3ee;    /* soft grey-beige boxes */
+  --fg: #2b211b;          /* main text */
+  --muted: #6a5d55;       /* lighter text */
+  --line: #e8ded5;        /* borders */
+
+  --pri: #c4500f;         /* main orange (from the logo) */
+  --pri-fg: #ffffff;      /* text on top of orange */
+  --pri-soft: #fbe7d9;    /* light orange */
+  --acc: #f2a900;         /* yellow accent */
+  --info: #2d6cb0;
+  --info-soft: #e4eef9;
+
+  --ok: #1b7a43;          /* green = good */
+  --ok-soft: #dff3e6;
+  --warn: #9a5b00;        /* amber = waiting */
+  --warn-soft: #fff0d1;
+  --err: #b3261e;         /* red = problem */
+  --err-soft: #fde4e2;
+
+  --shadow: 0 10px 40px rgba(40, 25, 15, 0.18);
+}
+
+
+/* ---------- 2. BASE ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+h2 { font-size: 16px; margin: 0; }
+h3 { font-size: 14px; margin: 0; }
+
+svg { vertical-align: -3px; }
+
+
+/* ---------- 3. THE MAIN LAYOUT ---------- */
+
+/* .phone is the whole app box. --w = how wide the content may be */
+.phone {
+  --w: 640px;
+  width: 100%;
+  height: 100dvh;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.phone.wide { --w: 960px; }
+.phone.auth { --w: 440px; }
+
+/* top bar */
+.top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 12px max(16px, calc((100% - var(--w)) / 2));
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.top h1 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* the scrolling middle part of every screen */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px max(16px, calc((100% - var(--w)) / 2));
+}
+
+/* bottom tab bar (phones) */
+.tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  padding: 6px 6px 8px;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 2px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.tab.on {
+  color: var(--pri);
+  font-weight: 700;
+  background: var(--pri-soft);
+}
+
+/* logo + small round icon buttons */
+.brand { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.lg { display: inline-block; max-width: 100%; padding: 3px 6px; border-radius: 10px; }
+.lg img { display: block; height: 38px; width: auto; max-width: 100%; }
+
+.ib {
+  position: relative;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--fg);
+  font-size: 17px;
+  cursor: pointer;
+}
+.ib .dot {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--err);
+  color: #fff;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+}
+
+
+/* ---------- 4. CARDS ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+}
+.card.flat {
+  background: var(--surface2);
+  border-color: transparent;
+}
+
+/* the big orange balance box */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--pri), #d8731f);
+  color: #fff;
+}
+.hero .big {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.hero small { opacity: 0.85; }
+
+
+/* ---------- 5. SMALL LAYOUT + TEXT HELPERS ---------- */
+.row { display: flex; gap: 10px; align-items: center; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.grow { flex: 1; min-width: 0; }
+.center { text-align: center; align-items: center; }
+
+.muted { color: var(--muted); }
+.sm { font-size: 13px; }
+.xs { font-size: 12px; }
+
+.sect {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.amt {
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ---------- 6. BUTTONS ---------- */
+.btn {
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--pri);
+  color: var(--pri-fg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn.sec    { background: var(--pri-soft); color: var(--pri); }
+.btn.ghost  { background: none; color: var(--pri); border: 1.5px solid var(--pri); }
+.btn.danger { background: var(--err-soft); color: var(--err); }
+.btn.sm     { width: auto; min-height: 38px; padding: 8px 14px; font-size: 13px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* a button that looks like a text link */
+.link {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--pri);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* the orange outline when you tab through with the keyboard */
+.btn:focus-visible, .ib:focus-visible, .tab:focus-visible, .link:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible, .opt:focus-within {
+  outline: 3px solid var(--acc);
+  outline-offset: 2px;
+}
+
+
+/* ---------- 7. FORMS ---------- */
+label.f {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+input[type=text], input[type=email], input[type=password], input[type=tel],
+input[type=number], input[type=date], select, textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-weight: 400;
+}
+textarea { min-height: 90px; resize: vertical; }
+
+input.bad, select.bad, textarea.bad { border-color: var(--err); }
+.err { color: var(--err); font-size: 12px; font-weight: 500; }
+
+/* big tappable choice boxes (radio buttons, "Pay" rows) */
+.opt {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+}
+.opt.on  { border-color: var(--pri); background: var(--pri-soft); }
+.opt.dis { opacity: 0.5; cursor: not-allowed; }
+.opt input { flex: none; width: 18px; height: 18px; accent-color: var(--pri); }
+
+/* checkbox with a sentence next to it */
+.chk { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; }
+.chk input { flex: none; width: 20px; height: 20px; margin-top: 1px; accent-color: var(--pri); }
+
+
+/* ---------- 8. LABELS (pills) AND MESSAGE BOXES ---------- */
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.pill.ok   { background: var(--ok-soft);   color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.err  { background: var(--err-soft);  color: var(--err); }
+.pill.n    { background: var(--surface2);  color: var(--muted); }
+
+.banner {
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.banner.info { background: var(--info-soft); color: var(--fg); }
+.banner.warn { background: var(--warn-soft); color: var(--warn); }
+.banner.ok   { background: var(--ok-soft);   color: var(--ok); }
+.banner.err  { background: var(--err-soft);  color: var(--err); }
+
+
+/* ---------- 9. LISTS, TILES, TABLES ---------- */
+.li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.li:last-child { border-bottom: 0; }
+
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 74px;
+  padding: 12px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface2);
+  color: var(--fg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tile span { color: var(--pri); font-size: 22px; }
+.tile b { font-size: 13px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 8px 6px; text-align: left; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+
+
+/* ---------- 10. EXTRAS ---------- */
+
+/* the 3 little progress bars at the top of a form */
+.steps { display: flex; gap: 6px; }
+.steps i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.steps i.on { background: var(--pri); }
+
+/* big round icon on "success" screens */
+.badge {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+/* a grey box with text you can copy (account numbers) */
+.copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface2);
+}
+.copy code { flex: 1; font-size: 14px; overflow-wrap: anywhere; user-select: all; }
+
+/* the little message that pops up at the bottom */
+.toast {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 84px;
+  z-index: 9;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+
+/* the fake "PDF" statement preview */
+.pdf {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-size: 12px;
+}
+.pdf table { font-size: 11px; }
+.pdf th { color: #666; }
+.pdf td, .pdf th { border-color: #ddd; }
+
+
+/* ---------- 11. BIGGER SCREENS ---------- */
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal { animation: reveal 0.18s ease-out; }
+
+/* tablets and up */
+@media (min-width: 640px) {
+  .body.home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: start;
+    align-items: start;
+    gap: 16px;
+  }
+  .body.home > .hero,
+  .body.home > .tiles,
+  .body.home > div:first-child { grid-column: 1 / -1; }
+  .body.home > .tiles { grid-template-columns: repeat(4, 1fr); }
+
+  .toast { max-width: 420px; margin-inline: auto; }
+  
+  /* balance the home cards: the breakdown is tall on the left,
+     the appointment and announcement cards stack on the right */
+  .body.home > :nth-child(3) { grid-row: span 2; }
+  .body.home > :nth-child(4),
+  .body.home > :nth-child(5) { align-self: stretch; }
+}
+
+/* laptops and desktops: the tab bar becomes a side menu */
+@media (min-width: 1024px) {
+  .phone.withnav {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .phone.withnav > .tabs {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 20px 12px;
+    border-top: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface2);
+  }
+  .phone.withnav .tab {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 13px 14px;
+    font-size: 15px;
+  }
+  .phone.withnav > .top  { grid-column: 2; grid-row: 1; }
+  .phone.withnav > .body { grid-column: 2; grid-row: 2; background: var(--bg); }
+
+  .tab span { font-size: 20px; }
+  .toast { bottom: 24px; }
+}
+
+/* boxes the staff are not allowed to change */
+.f input:disabled { opacity: 0.55; background: var(--bg2, #f1ece6); cursor: not-allowed; }
+
+/* password box with an eye button inside it */
+.pw { position: relative; display: block; }
+.pw input { width: 100%; padding-right: 46px; }
+.pwbtn {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 6px 8px; line-height: 0;
+}
+
+.pwbtn:hover { color: var(--pri); }
